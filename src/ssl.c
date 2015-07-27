@@ -16329,4 +16329,17 @@ const byte* wolfSSL_SESSION_get_id(WOLFSSL_SESSION* sess, unsigned int* idLen)
     *idLen = sess->sessionIDSz;
     return sess->sessionID;
 }
+
+int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *a, const WOLFSSL_X509_NAME *b)
+{
+    (void) a;
+    (void) b;
+    return SSL_SUCCESS;
+}
+
+void wolfSSL_X509_email_free(void *sk)
+{
+    (void)sk;
+}
+
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */

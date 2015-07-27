@@ -477,7 +477,17 @@ typedef WOLFSSL_X509_NAME_ENTRY X509_NAME_ENTRY;
 #define SSL_SESSION_get_id               wolfSSL_SESSION_get_id
 #define CRYPTO_dynlock_value             WOLFSSL_dynlock_value
 typedef WOLFSSL_ASN1_BIT_STRING    ASN1_BIT_STRING;
+typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
+typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
+typedef WOLFSSL_OCSP_REQUEST       OCSP_REQUEST;
+typedef char *OPENSSL_STRING;
 
+# define V_OCSP_CERTSTATUS_UNKNOWN            2
+# define X509_V_ERR_APPLICATION_VERIFICATION 50
+# define V_OCSP_CERTSTATUS_GOOD               0
+
+#define X509_NAME_cmp   wolfSSL_X509_NAME_cmp
+#define X509_email_free wolfSSL_X509_email_free
 
 #endif /* HAVE_STUNNEL */
 
