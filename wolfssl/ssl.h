@@ -573,10 +573,11 @@ enum {
     OCSP_TRUSTOTHER  = 512,
     OCSP_RESPID_KEY  = 1024,
     OCSP_NOTIME      = 2048,
-
+#ifndef HAVE_STUNNEL
     OCSP_CERTID   = 2,
     OCSP_REQUEST  = 4,
     OCSP_RESPONSE = 8,
+#endif
     OCSP_BASICRESP = 16,
 
     WOLFSSL_OCSP_URL_OVERRIDE = 1,
@@ -1559,6 +1560,11 @@ WOLFSSL_API int PEM_write_bio_WOLFSSL_X509(WOLFSSL_BIO *bp, WOLFSSL_X509 *x);
 
 #include <wolfssl/openssl/crypto.h>
 
+
+typedef struct WOLFSSL_OCSP_CERTID   WOLFSSL_OCSP_CERTID;
+typedef struct WOLFSSL_OCSP_RESPONSE WOLFSSL_OCSP_RESPONSE;
+typedef struct WOLFSSL_OCSP_REQUEST  WOLFSSL_OCSP_REQUEST;
+
 WOLFSSL_API int wolfSSL_CRYPTO_set_mem_ex_functions(void *(*m) (size_t, const char *, int),
     void *(*r) (void *, size_t, const char *, int), void (*f) (void *));
 
@@ -1613,6 +1619,11 @@ WOLFSSL_API int wolfSSL_X509_NAME_get_sz(WOLFSSL_X509_NAME*);
 
 
 WOLFSSL_API const unsigned char* wolfSSL_SESSION_get_id(WOLFSSL_SESSION*, unsigned int*);
+
+WOLFSSL_API int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *a, const WOLFSSL_X509_NAME *b);
+
+WOLFSSL_API void wolfSSL_X509_email_free(void *sk);
+
 #endif /* HAVE_STUNNEL */
 
 #ifdef __cplusplus
