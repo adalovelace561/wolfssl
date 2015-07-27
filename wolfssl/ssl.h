@@ -1620,6 +1620,8 @@ WOLFSSL_API int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *a, const WOLFSSL_
 
 WOLFSSL_API void wolfSSL_X509_email_free(void *sk);
 
+WOLFSSL_API WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void);
+
 #endif /* HAVE_STUNNEL */
 
 #ifdef __cplusplus
