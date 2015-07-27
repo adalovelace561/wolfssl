@@ -481,15 +481,19 @@ typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
 typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 typedef WOLFSSL_OCSP_REQUEST       OCSP_REQUEST;
 typedef char *OPENSSL_STRING;
+typedef WOLFSSL_OCSP_BASICRESP     OCSP_BASICRESP;
+typedef WOLFSSL_OCSP_REQ_CTX       OCSP_REQ_CTX;
 
-# define V_OCSP_CERTSTATUS_UNKNOWN            2
-# define X509_V_ERR_APPLICATION_VERIFICATION 50
-# define V_OCSP_CERTSTATUS_GOOD               0
+#define V_OCSP_CERTSTATUS_UNKNOWN            2
+#define X509_V_ERR_APPLICATION_VERIFICATION 50
+#define V_OCSP_CERTSTATUS_GOOD               0
+#define V_OCSP_CERTSTATUS_REVOKED            1
+#define OCSP_RESPONSE_STATUS_SUCCESSFUL      0
 
-#define X509_NAME_cmp   wolfSSL_X509_NAME_cmp
-#define X509_email_free wolfSSL_X509_email_free
-
-#define OCSP_REQUEST_new wolfSSL_OCSP_REQUEST_new
+#define ASN1_GENERALIZEDTIME    WOLFSSL_ASN1_STRING
+#define X509_NAME_cmp           wolfSSL_X509_NAME_cmp
+#define X509_email_free         wolfSSL_X509_email_free
+#define OCSP_REQUEST_new        wolfSSL_OCSP_REQUEST_new
 
 #endif /* HAVE_STUNNEL */
 
