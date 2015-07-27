@@ -524,7 +524,15 @@ typedef WOLFSSL_CRYPTO_THREADID    CRYPTO_THREADID;
 #define OCSP_response_status  wolfSSL_OCSP_response_status
 
 #define OCSP_response_status_str wolfSSL_OCSP_response_status_str
+typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
+typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 
+# define V_OCSP_CERTSTATUS_UNKNOWN            2
+# define X509_V_ERR_APPLICATION_VERIFICATION 50
+# define V_OCSP_CERTSTATUS_GOOD               0
+
+#define X509_NAME_cmp   wolfSSL_X509_NAME_cmp
+#define X509_email_free wolfSSL_X509_email_free
 
 #endif /* HAVE_STUNNEL */
 

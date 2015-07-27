@@ -16620,6 +16620,7 @@ WOLFSSL_STRING wolfSSL_sk_WOLFSSL_STRING_value(
     (void) idx;
     return 0;
 }
+
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
 
 #if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
