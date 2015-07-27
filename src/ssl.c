@@ -16340,6 +16340,8 @@ void wolfSSL_X509_email_free(void *sk)
 }
 
 WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void){
+    WOLFSSL_ENTER("wolfSSL_OCSP_REQUEST_new");
+    WOLFSSL_STUB("wolfSSL_OCSP_REQUEST_new");
     WOLFSSL_OCSP_REQUEST *or = NULL;
     return or;
 }
