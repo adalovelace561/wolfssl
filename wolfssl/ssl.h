@@ -577,9 +577,8 @@ enum {
     OCSP_CERTID   = 2,
     OCSP_REQUEST  = 4,
     OCSP_RESPONSE = 8,
-#endif
     OCSP_BASICRESP = 16,
-
+#endif
     WOLFSSL_OCSP_URL_OVERRIDE = 1,
     WOLFSSL_OCSP_NO_NONCE     = 2,
     WOLFSSL_OCSP_CHECKALL     = 4,
@@ -1561,9 +1560,11 @@ WOLFSSL_API int PEM_write_bio_WOLFSSL_X509(WOLFSSL_BIO *bp, WOLFSSL_X509 *x);
 #include <wolfssl/openssl/crypto.h>
 
 
-typedef struct WOLFSSL_OCSP_CERTID   WOLFSSL_OCSP_CERTID;
-typedef struct WOLFSSL_OCSP_RESPONSE WOLFSSL_OCSP_RESPONSE;
-typedef struct WOLFSSL_OCSP_REQUEST  WOLFSSL_OCSP_REQUEST;
+typedef struct WOLFSSL_OCSP_CERTID    WOLFSSL_OCSP_CERTID;
+typedef struct WOLFSSL_OCSP_RESPONSE  WOLFSSL_OCSP_RESPONSE;
+typedef struct WOLFSSL_OCSP_REQUEST   WOLFSSL_OCSP_REQUEST;
+typedef struct WOLFSSL_OCSP_BASICRESP WOLFSSL_OCSP_BASICRESP;
+typedef struct WOLFSSL_OCSP_REQ_CTX   WOLFSSL_OCSP_REQ_CTX;
 
 WOLFSSL_API int wolfSSL_CRYPTO_set_mem_ex_functions(void *(*m) (size_t, const char *, int),
     void *(*r) (void *, size_t, const char *, int), void (*f) (void *));
