@@ -577,7 +577,6 @@ enum {
     OCSP_CERTID   = 2,
     OCSP_REQUEST  = 4,
     OCSP_RESPONSE = 8,
-#endif
     OCSP_BASICRESP = 16,
 #endif
     WOLFSSL_OCSP_URL_OVERRIDE = 1,
