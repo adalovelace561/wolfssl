@@ -534,6 +534,8 @@ typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 #define X509_NAME_cmp   wolfSSL_X509_NAME_cmp
 #define X509_email_free wolfSSL_X509_email_free
 
+#define OCSP_REQUEST_new wolfSSL_OCSP_REQUEST_new
+
 #endif /* HAVE_STUNNEL */
 
 #ifdef __cplusplus

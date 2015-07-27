@@ -1684,6 +1684,8 @@ WOLFSSL_API int wolfSSL_OCSP_response_status(WOLFSSL_OCSP_RESPONSE *resp);
 
 WOLFSSL_API const char *wolfSSL_OCSP_response_status_str(long s);
 
+WOLFSSL_API WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void);
+
 #endif /* HAVE_STUNNEL */
 
 #ifdef __cplusplus
