@@ -57,6 +57,9 @@
     #include <wolfssl/wolfcrypt/md4.h>
     #include <wolfssl/wolfcrypt/md5.h>
     #include <wolfssl/wolfcrypt/arc4.h>
+    #ifdef HAVE_STUNNEL
+        #include <wolfssl/openssl/ocsp.h>
+    #endif /* WITH_STUNNEL */
     #ifdef WOLFSSL_SHA512
         #include <wolfssl/wolfcrypt/sha512.h>
     #endif
@@ -16331,12 +16334,58 @@ int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *a, const WOLFSSL_X509_NAME *b
 {
     (void) a;
     (void) b;
+    WOLFSSL_ENTER("wolfSSL_X509_NAME_cmp");
+    WOLFSSL_STUB("wolfSSL_X509_NAME_cmp");
+    WOLFSSL_LEAVE("wolfSSL_X509_NAME_cmp",0);
     return SSL_SUCCESS;
 }
 
 void wolfSSL_X509_email_free(void *sk)
 {
     (void)sk;
+    WOLFSSL_ENTER("wolfSSL_X509_email_free");
+    WOLFSSL_STUB("wolfSSL_X509_email_free");
+    WOLFSSL_LEAVE("wolfSSL_X509_email_free",0);
 }
 
+OPENSSL_STRING* wolfSSL_X509_get1_ocsp(WOLFSSL_X509 *cert)
+{
+    WOLFSSL_ENTER("wolfSSL_X509_get1_ocsp");
+    WOLFSSL_STUB("wolfSSL_X509_get1_ocsp");
+    WOLFSSL_LEAVE("wolfSSL_X509_get1_ocsp",0);
+    (void)cert;
+    return NULL;
+}
+
+void wolfSSL_OCSP_CERTID_free(WOLFSSL_OCSP_CERTID* ocsp)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_CERTID_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_CERTID_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_CERTID_free",0);
+    (void)ocsp;
+    return;
+}
+
+
+WOLFSSL_OCSP_CERTID* wolfSSL_OCSP_cert_to_id(const WOLFSSL_EVP_MD* dgst,
+        WOLFSSL_X509* subject, WOLFSSL_X509* issuer)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_CERTID_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_CERTID_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_CERTID_free",0);
+    (void)dgst;
+    (void)subject;
+    (void)issuer;
+    return NULL;
+}
+
+
+void wolfSSL_OCSP_REQUEST_free(WOLFSSL_OCSP_REQUEST* request)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_REQUEST_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_REQUEST_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_REQUEST_free",0);
+    (void)request;
+    return;
+}
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
