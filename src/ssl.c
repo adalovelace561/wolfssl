@@ -16345,6 +16345,11 @@ void wolfSSL_X509_email_free(void *sk)
     (void)sk;
 }
 
+WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void){
+    WOLFSSL_OCSP_REQUEST *or = NULL;
+    return or;
+}
+
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
 
 #if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
