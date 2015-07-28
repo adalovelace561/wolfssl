@@ -477,10 +477,7 @@ typedef WOLFSSL_X509_NAME_ENTRY X509_NAME_ENTRY;
 #define SSL_SESSION_get_id               wolfSSL_SESSION_get_id
 #define CRYPTO_dynlock_value             WOLFSSL_dynlock_value
 typedef WOLFSSL_ASN1_BIT_STRING    ASN1_BIT_STRING;
-typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
-typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 typedef WOLFSSL_OCSP_REQUEST       OCSP_REQUEST;
-typedef char *OPENSSL_STRING;
 typedef WOLFSSL_OCSP_BASICRESP     OCSP_BASICRESP;
 typedef WOLFSSL_OCSP_REQ_CTX       OCSP_REQ_CTX;
 
