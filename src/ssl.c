@@ -16628,6 +16628,27 @@ WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void){
     return or;
 }
 
+WOLFSSL_OCSP_CERTID* wolfSSL_OCSP_cert_to_id(const WOLFSSL_EVP_MD* dgst,
+        WOLFSSL_X509* subject, WOLFSSL_X509* issuer)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_CERTID_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_CERTID_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_CERTID_free",0);
+    (void)dgst;
+    (void)subject;
+    (void)issuer;
+    return NULL;
+}
+
+
+void wolfSSL_OCSP_REQUEST_free(WOLFSSL_OCSP_REQUEST* request)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_REQUEST_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_REQUEST_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_REQUEST_free",0);
+    (void)request;
+    return;
+}
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
 
 #if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
