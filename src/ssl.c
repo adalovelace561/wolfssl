@@ -16400,6 +16400,206 @@ void wolfSSL_OCSP_REQUEST_free(WOLFSSL_OCSP_REQUEST* request)
     (void)request;
     return;
 }
+
+int wolfSSL_BIO_should_write(WOLFSSL_BIO *bio)
+{
+    WOLFSSL_ENTER("wolfSSL_BIO_should_write");
+    WOLFSSL_STUB("wolfSSL_BIO_should_write");
+    WOLFSSL_LEAVE("wolfSSL_BIO_should_write",0);
+    (void) bio;
+    return SSL_SUCCESS; 
+}
+
+int BIO_should_read(WOLFSSL_BIO *bio)
+{
+    WOLFSSL_ENTER("BIO_should_read");
+    WOLFSSL_STUB("BIO_should_read");
+    WOLFSSL_LEAVE("BIO_should_read",0);
+    (void) bio;
+    return SSL_SUCCESS; 
+}
+
+int wolfSSL_OCSP_check_nonce(WOLFSSL_OCSP_REQUEST *req, WOLFSSL_OCSP_BASICRESP *bs)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_check_nonce");
+    WOLFSSL_STUB("wolfSSL_OCSP_check_nonce");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_check_nonce",0);
+    (void) req;
+    (void) bs;
+    return SSL_SUCCESS;
+}
+
+int wolfSSL_OCSP_basic_verify(WOLFSSL_OCSP_BASICRESP *bs, STACK_OF(WOLFSSL_X509) *certs,
+                      WOLFSSL_X509_STORE *st, unsigned long flags)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_basic_verify");
+    WOLFSSL_STUB("wolfSSL_OCSP_basic_verify");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_basic_verify",0);
+    (void) bs; 
+    (void) certs;
+    (void) st;
+    flags  = 0;
+    return SSL_SUCCESS;
+}
+
+void wolfSSL_OCSP_REQ_CTX_free(WOLFSSL_OCSP_REQ_CTX *rctx)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_REQ_CTX_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_REQ_CTX_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_REQ_CTX_free",0);
+    (void) rctx;
+}
+
+int wolfSSL_OCSP_RESPONSE_free( WOLFSSL_OCSP_REQUEST * r)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_RESPONSE_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_RESPONSE_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_RESPONSE_free",0);
+    (void) r;
+    return SSL_SUCCESS;
+}
+
+int wolfSSL_OCSP_BASICRESP_free(WOLFSSL_OCSP_BASICRESP *basic_response)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_BASICRESP_free");
+    WOLFSSL_STUB("wolfSSL_OCSP_BASICRESP_free");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_BASICRESP_free",0);
+    (void) basic_response;
+    return SSL_SUCCESS;
+}
+
+
+WOLFSSL_OCSP_BASICRESP *wolfSSL_OCSP_response_get1_basic(WOLFSSL_OCSP_REQUEST *resp)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_response_get1_basic");
+    WOLFSSL_STUB("wolfSSL_OCSP_response_get1_basic");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_response_get1_basic",0);
+    (void) resp;
+    return NULL;
+}
+
+int wolfSSL_OCSP_resp_find_status(WOLFSSL_OCSP_BASICRESP *bs, WOLFSSL_OCSP_CERTID *id, int *status,
+                          int *reason,
+                          WOLFSSL_ASN1_STRING **revtime,
+                          WOLFSSL_ASN1_STRING **thisupd,
+                          WOLFSSL_ASN1_STRING **nextupd)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_resp_find_status");
+    WOLFSSL_STUB("wolfSSL_OCSP_resp_find_status");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_resp_find_status",0);
+    (void) bs;
+    (void) id;
+    (void) status;
+    (void) reason;
+    (void) revtime;
+    (void) thisupd;
+    (void) nextupd;
+    return SSL_SUCCESS;
+}
+
+int wolfSSL_OCSP_request_add1_nonce(WOLFSSL_OCSP_REQUEST *req, unsigned char *val, int len)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_request_add1_nonce");
+    WOLFSSL_STUB("wolfSSL_OCSP_request_add1_nonce");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_request_add1_nonce",0);
+    (void) req;
+    (void) val;
+    len = 0;
+    return SSL_SUCCESS;
+}
+
+WOLFSSL_OCSP_ONEREQ *wolfSSL_OCSP_request_add0_id(WOLFSSL_OCSP_REQUEST *req, WOLFSSL_OCSP_CERTID *cid)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_request_add0_id");
+    WOLFSSL_STUB("wolfSSL_OCSP_request_add0_id");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_request_add0_id",0);
+    (void) req; 
+    (void) cid;
+    return NULL;
+}
+
+const char *wolfSSL_OCSP_crl_reason_str(long s)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_crl_reason_str");
+    WOLFSSL_STUB("wolfSSL_OCSP_crl_reason_str");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_crl_reason_str",0);
+    s = 0;
+    return NULL;
+}
+
+int wolfSSL_OCSP_check_validity(WOLFSSL_ASN1_STRING *thisupd,
+                        WOLFSSL_ASN1_STRING *nextupd, long sec, long maxsec)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_check_validity");
+    WOLFSSL_STUB("wolfSSL_OCSP_check_validity");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_check_validity",0);
+    (void) thisupd;
+    (void) nextupd;
+    sec = 0;
+    maxsec =0;
+    return SSL_SUCCESS;
+}
+
+STACK_OF(WOLFSSL_X509)* wolfSSL_X509_STORE_CTX_get_chain(WOLFSSL_X509_STORE_CTX *ctx)
+{
+    WOLFSSL_ENTER("wolfSSL_X509_STORE_CTX_get_chain");
+    WOLFSSL_STUB("wolfSSL_X509_STORE_CTX_get_chain");
+    WOLFSSL_LEAVE("wolfSSL_X509_STORE_CTX_get_chain",0);
+    (void) ctx;
+    return NULL;
+}
+
+WOLFSSL_OCSP_REQ_CTX *wolfSSL_OCSP_sendreq_new(WOLFSSL_BIO *io, const char *path, WOLFSSL_OCSP_REQUEST *req, int maxline)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_sendreq_new");
+    WOLFSSL_STUB("wolfSSL_OCSP_sendreq_new");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_sendreq_new",0);
+    (void) io;
+    (void) path;
+    (void) req;
+    maxline = 0;
+    return NULL;
+}
+
+int wolfSSL_OCSP_sendreq_nbio(WOLFSSL_OCSP_REQUEST **presp, WOLFSSL_OCSP_REQ_CTX *rctx)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_sendreq_nbio");
+    WOLFSSL_STUB("wolfSSL_OCSP_sendreq_nbio");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_sendreq_nbio",0);
+    (void) presp;
+    (void) rctx;
+    return SSL_SUCCESS;
+}
+
+
+const char *wolfSSL_OCSP_cert_status_str(long s)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_cert_status_str");
+    WOLFSSL_STUB("wolfSSL_OCSP_cert_status_str");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_cert_status_str",0);
+    s = 0;
+    return NULL;
+}
+
+int wolfSSL_OCSP_response_status(WOLFSSL_OCSP_REQUEST *resp)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_response_status");
+    WOLFSSL_STUB("wolfSSL_OCSP_response_status");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_response_status",0);
+    (void) resp;
+    return SSL_SUCCESS;
+}
+
+
+const char *wolfSSL_OCSP_response_status_str(long s)
+{
+    WOLFSSL_ENTER("wolfSSL_OCSP_response_status_str");
+    WOLFSSL_STUB("wolfSSL_OCSP_response_status_str");
+    WOLFSSL_LEAVE("wolfSSL_OCSP_response_status_str",0);
+    s = 0;
+    return NULL;
+}
+
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
 
 #if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
