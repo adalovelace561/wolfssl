@@ -16468,7 +16468,6 @@ int wolfSSL_OCSP_BASICRESP_free(WOLFSSL_OCSP_BASICRESP *basic_response)
     return SSL_SUCCESS;
 }
 
-
 WOLFSSL_OCSP_BASICRESP *wolfSSL_OCSP_response_get1_basic(WOLFSSL_OCSP_RESPONSE *resp)
 {
     WOLFSSL_ENTER("wolfSSL_OCSP_response_get1_basic");
@@ -16621,34 +16620,6 @@ WOLFSSL_STRING wolfSSL_sk_WOLFSSL_STRING_value(
     return 0;
 }
 
-WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void){
-    WOLFSSL_ENTER("wolfSSL_OCSP_REQUEST_new");
-    WOLFSSL_STUB("wolfSSL_OCSP_REQUEST_new");
-    WOLFSSL_OCSP_REQUEST *or = NULL;
-    return or;
-}
-
-WOLFSSL_OCSP_CERTID* wolfSSL_OCSP_cert_to_id(const WOLFSSL_EVP_MD* dgst,
-        WOLFSSL_X509* subject, WOLFSSL_X509* issuer)
-{
-    WOLFSSL_ENTER("wolfSSL_OCSP_CERTID_free");
-    WOLFSSL_STUB("wolfSSL_OCSP_CERTID_free");
-    WOLFSSL_LEAVE("wolfSSL_OCSP_CERTID_free",0);
-    (void)dgst;
-    (void)subject;
-    (void)issuer;
-    return NULL;
-}
-
-
-void wolfSSL_OCSP_REQUEST_free(WOLFSSL_OCSP_REQUEST* request)
-{
-    WOLFSSL_ENTER("wolfSSL_OCSP_REQUEST_free");
-    WOLFSSL_STUB("wolfSSL_OCSP_REQUEST_free");
-    WOLFSSL_LEAVE("wolfSSL_OCSP_REQUEST_free",0);
-    (void)request;
-    return;
-}
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
 
 #if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
