@@ -36,15 +36,25 @@
 	#define OCSP_cert_to_id                  wolfSSL_OCSP_cert_to_id
     #define OCSP_REQUEST_free                wolfSSL_OCSP_REQUEST_free
 
+    #define OPENSSL_STRING           WOLFSSL_STRING
+    #define sk_OPENSSL_STRING_value  wolfSSL_sk_WOLFSSL_STRING_value
+    #define sk_OPENSSL_STRING_num    wolfSSL_sk_WOLFSSL_STRING_num
+
     typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
-    typedef char*                      OPENSSL_STRING;
+    typedef char*                      WOLFSSL_STRING;
     typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 
 
-	WOLFSSL_API OPENSSL_STRING *wolfSSL_X509_get1_ocsp(WOLFSSL_X509*);
+	WOLFSSL_API WOLFSSL_STRING *wolfSSL_X509_get1_ocsp(WOLFSSL_X509*);
 	WOLFSSL_API void wolfSSL_OCSP_CERTID_free(WOLFSSL_OCSP_CERTID* cert);
-	WOLFSSL_API WOLFSSL_OCSP_CERTID* wolfSSL_OCSP_cert_to_id(const WOLFSSL_EVP_MD*,
-		WOLFSSL_X509*, WOLFSSL_X509*);
+	WOLFSSL_API
+    WOLFSSL_OCSP_CERTID* wolfSSL_OCSP_cert_to_id(const WOLFSSL_EVP_MD*,
+	            WOLFSSL_X509*, WOLFSSL_X509*);
+
+    WOLFSSL_API
+    int wolfSSL_sk_WOLFSSL_STRING_num(const STACK_OF(WOLFSSL_STRING)*);
+    WOLFSSL_API WOLFSSL_STRING wolfSSL_sk_WOLFSSL_STRING_value(
+            const STACK_OF(WOLFSSL_STRING)*, int);
 
 
 	WOLFSSL_API void wolfSSL_OCSP_REQUEST_free(WOLFSSL_OCSP_REQUEST*);
