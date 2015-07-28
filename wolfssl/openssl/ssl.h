@@ -488,7 +488,7 @@ typedef WOLFSSL_OCSP_ONEREQ        OCSP_ONEREQ;
 #define V_OCSP_CERTSTATUS_REVOKED            1
 #define OCSP_RESPONSE_STATUS_SUCCESSFUL      0
 
-#define ASN1_GENERALIZEDTIME    WOLFSSL_ASN1_STRING
+#define ASN1_GENERALIZEDTIME    WOLFSSL_ASN1_TIME
 #define X509_NAME_cmp           wolfSSL_X509_NAME_cmp
 #define X509_email_free         wolfSSL_X509_email_free
 #define OCSP_REQUEST_new        wolfSSL_OCSP_REQUEST_new

@@ -16472,11 +16472,10 @@ WOLFSSL_OCSP_BASICRESP *wolfSSL_OCSP_response_get1_basic(WOLFSSL_OCSP_RESPONSE *
     return NULL;
 }
 
-int wolfSSL_OCSP_resp_find_status(WOLFSSL_OCSP_BASICRESP *bs, WOLFSSL_OCSP_CERTID *id, int *status,
-                          int *reason,
-                          WOLFSSL_ASN1_STRING **revtime,
-                          WOLFSSL_ASN1_STRING **thisupd,
-                          WOLFSSL_ASN1_STRING **nextupd)
+int wolfSSL_OCSP_resp_find_status(WOLFSSL_OCSP_BASICRESP *bs,
+        WOLFSSL_OCSP_CERTID *id, int *status,
+        int *reason, WOLFSSL_ASN1_TIME**revtime,
+        WOLFSSL_ASN1_TIME**thisupd, WOLFSSL_ASN1_TIME**nextupd)
 {
     WOLFSSL_ENTER("wolfSSL_OCSP_resp_find_status");
     WOLFSSL_STUB("wolfSSL_OCSP_resp_find_status");
@@ -16521,8 +16520,8 @@ const char *wolfSSL_OCSP_crl_reason_str(long s)
     return NULL;
 }
 
-int wolfSSL_OCSP_check_validity(WOLFSSL_ASN1_STRING *thisupd,
-                        WOLFSSL_ASN1_STRING *nextupd, long sec, long maxsec)
+int wolfSSL_OCSP_check_validity(WOLFSSL_ASN1_TIME*thisupd,
+                        WOLFSSL_ASN1_TIME*nextupd, long sec, long maxsec)
 {
     WOLFSSL_ENTER("wolfSSL_OCSP_check_validity");
     WOLFSSL_STUB("wolfSSL_OCSP_check_validity");
