@@ -480,6 +480,7 @@ typedef WOLFSSL_ASN1_BIT_STRING    ASN1_BIT_STRING;
 typedef WOLFSSL_OCSP_REQUEST       OCSP_REQUEST;
 typedef WOLFSSL_OCSP_BASICRESP     OCSP_BASICRESP;
 typedef WOLFSSL_OCSP_REQ_CTX       OCSP_REQ_CTX;
+typedef WOLFSSL_OCSP_ONEREQ        OCSP_ONEREQ;
 
 #define V_OCSP_CERTSTATUS_UNKNOWN            2
 #define X509_V_ERR_APPLICATION_VERIFICATION 50
@@ -491,6 +492,31 @@ typedef WOLFSSL_OCSP_REQ_CTX       OCSP_REQ_CTX;
 #define X509_NAME_cmp           wolfSSL_X509_NAME_cmp
 #define X509_email_free         wolfSSL_X509_email_free
 #define OCSP_REQUEST_new        wolfSSL_OCSP_REQUEST_new
+#define BIO_should_write wolfSSL_BIO_should_write
+#define BIO_should_read wolfSSL_BIO_should_read
+
+#define OCSP_check_nonce  wolfSSL_OCSP_check_nonce
+#define OCSP_cert_status_str  wolfSSL_OCSP_cert_status_str
+#define OCSP_basic_verify  wolfSSL_OCSP_basic_verify
+#define OCSP_REQ_CTX_free  wolfSSL_OCSP_REQ_CTX_free
+#define OCSP_RESPONSE_free  wolfSSL_OCSP_RESPONSE_free
+#define OCSP_BASICRESP_free  wolfSSL_OCSP_BASICRESP_free
+
+#define OCSP_response_get1_basic  wolfSSL_OCSP_response_get1_basic
+#define OCSP_resp_find_status  wolfSSL_OCSP_resp_find_status
+#define OCSP_request_add1_nonce  wolfSSL_OCSP_request_add1_nonce
+#define OCSP_request_add0_id  wolfSSL_OCSP_request_add0_id
+#define OCSP_crl_reason_str  wolfSSL_OCSP_crl_reason_str
+#define OCSP_check_validity  wolfSSL_OCSP_check_validity
+
+#define X509_STORE_CTX_get_chain  wolfSSL_X509_STORE_CTX_get_chain
+#define OCSP_sendreq_new  wolfSSL_OCSP_sendreq_new
+#define OCSP_sendreq_nbio  wolfSSL_OCSP_sendreq_nbio
+#define OCSP_cert_status_str  wolfSSL_OCSP_cert_status_str
+#define OCSP_response_status  wolfSSL_OCSP_response_status
+
+#define OCSP_response_status_str wolfSSL_OCSP_response_status_str
+
 
 #endif /* HAVE_STUNNEL */
 

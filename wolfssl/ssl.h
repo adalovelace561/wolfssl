@@ -1561,6 +1561,7 @@ typedef struct WOLFSSL_OCSP_RESPONSE  WOLFSSL_OCSP_RESPONSE;
 typedef struct WOLFSSL_OCSP_REQUEST   WOLFSSL_OCSP_REQUEST;
 typedef struct WOLFSSL_OCSP_BASICRESP WOLFSSL_OCSP_BASICRESP;
 typedef struct WOLFSSL_OCSP_REQ_CTX   WOLFSSL_OCSP_REQ_CTX;
+typedef struct WOLFSSL_OCSP_ONEREQ    WOLFSSL_OCSP_ONEREQ;
 
 WOLFSSL_API int wolfSSL_CRYPTO_set_mem_ex_functions(void *(*m) (size_t, const char *, int),
     void *(*r) (void *, size_t, const char *, int), void (*f) (void *));
@@ -1622,6 +1623,51 @@ WOLFSSL_API int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *a, const WOLFSSL_
 WOLFSSL_API void wolfSSL_X509_email_free(void *sk);
 
 WOLFSSL_API WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void);
+
+WOLFSSL_API int wolfSSL_BIO_should_write(WOLFSSL_BIO *bio);
+
+WOLFSSL_API int wolfSSL_BIO_should_read(WOLFSSL_BIO *bio);
+
+WOLFSSL_API int wolfSSL_OCSP_check_nonce(WOLFSSL_OCSP_REQUEST *req, WOLFSSL_OCSP_BASICRESP *bs);
+
+WOLFSSL_API const char * wolfSSL_OCSP_cert_status_str(long s);
+
+WOLFSSL_API int wolfSSL_OCSP_basic_verify(WOLFSSL_OCSP_BASICRESP *bs, STACK_OF(WOLFSSL_X509) *certs,
+                      WOLFSSL_X509_STORE *st, unsigned long flags);
+
+WOLFSSL_API void wolfSSL_OCSP_REQ_CTX_free(WOLFSSL_OCSP_REQ_CTX *rctx);
+
+WOLFSSL_API int wolfSSL_OCSP_RESPONSE_free( WOLFSSL_OCSP_REQUEST *);
+
+WOLFSSL_API int wolfSSL_OCSP_BASICRESP_free(WOLFSSL_OCSP_BASICRESP *basic_response);
+
+WOLFSSL_API WOLFSSL_OCSP_BASICRESP *wolfSSL_OCSP_response_get1_basic(WOLFSSL_OCSP_REQUEST *resp);
+
+WOLFSSL_API int wolfSSL_OCSP_resp_find_status(WOLFSSL_OCSP_BASICRESP *bs, WOLFSSL_OCSP_CERTID *id, int *status,
+                          int *reason,
+                          WOLFSSL_ASN1_STRING **revtime,
+                          WOLFSSL_ASN1_STRING **thisupd,
+                          WOLFSSL_ASN1_STRING **nextupd);
+
+WOLFSSL_API int wolfSSL_OCSP_request_add1_nonce(WOLFSSL_OCSP_REQUEST *req, unsigned char *val, int len);
+
+WOLFSSL_API WOLFSSL_OCSP_ONEREQ *wolfSSL_OCSP_request_add0_id(WOLFSSL_OCSP_REQUEST *req, WOLFSSL_OCSP_CERTID *cid);
+
+WOLFSSL_API const char *wolfSSL_OCSP_crl_reason_str(long s);
+
+WOLFSSL_API int wolfSSL_OCSP_check_validity(WOLFSSL_ASN1_STRING *thisupd,
+                        WOLFSSL_ASN1_STRING *nextupd, long sec, long maxsec);
+WOLFSSL_API STACK_OF(WOLFSSL_X509)* wolfSSL_X509_STORE_CTX_get_chain(WOLFSSL_X509_STORE_CTX *ctx);
+
+WOLFSSL_API WOLFSSL_OCSP_REQ_CTX *wolfSSL_OCSP_sendreq_new(WOLFSSL_BIO *io, const char *path, WOLFSSL_OCSP_REQUEST *req, int maxline);
+
+WOLFSSL_API int wolfSSL_OCSP_sendreq_nbio(WOLFSSL_OCSP_REQUEST **presp, WOLFSSL_OCSP_REQ_CTX *rctx);
+
+WOLFSSL_API const char *wolfSSL_OCSP_cert_status_str(long s);
+
+WOLFSSL_API int wolfSSL_OCSP_response_status(WOLFSSL_OCSP_REQUEST *resp);
+
+WOLFSSL_API const char *wolfSSL_OCSP_response_status_str(long s);
 
 #endif /* HAVE_STUNNEL */
 
