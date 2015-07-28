@@ -152,3 +152,6 @@ mqx/wolfcrypt_test/SaAnalysispointsManager.apconfig
 mqx/wolfcrypt_benchmark/.settings
 mqx/wolfcrypt_benchmark/.cwGeneratedFileSetLog
 mqx/wolfcrypt_benchmark/SaAnalysispointsManager.apconfig
+
+# Git backups after mergetool
+*.orig
