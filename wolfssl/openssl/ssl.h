@@ -527,6 +527,7 @@ typedef WOLFSSL_CRYPTO_THREADID    CRYPTO_THREADID;
 typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
 typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 
+
 #endif /* HAVE_STUNNEL */
 
 #ifdef __cplusplus
