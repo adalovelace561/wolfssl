@@ -16468,6 +16468,7 @@ int wolfSSL_OCSP_BASICRESP_free(WOLFSSL_OCSP_BASICRESP *basic_response)
     return SSL_SUCCESS;
 }
 
+
 WOLFSSL_OCSP_BASICRESP *wolfSSL_OCSP_response_get1_basic(WOLFSSL_OCSP_RESPONSE *resp)
 {
     WOLFSSL_ENTER("wolfSSL_OCSP_response_get1_basic");
