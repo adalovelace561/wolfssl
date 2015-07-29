@@ -1562,6 +1562,8 @@ typedef struct WOLFSSL_OCSP_REQUEST   WOLFSSL_OCSP_REQUEST;
 typedef struct WOLFSSL_OCSP_BASICRESP WOLFSSL_OCSP_BASICRESP;
 typedef struct WOLFSSL_OCSP_REQ_CTX   WOLFSSL_OCSP_REQ_CTX;
 typedef struct WOLFSSL_OCSP_ONEREQ    WOLFSSL_OCSP_ONEREQ;
+typedef struct WOLFSSL_COMP           WOLFSSL_COMP;
+typedef struct WOLFSSL_CRYPTO_THREADID WOLFSSL_CRYPTO_THREADID;
 
 WOLFSSL_API int wolfSSL_CRYPTO_set_mem_ex_functions(void *(*m) (size_t, const char *, int),
     void *(*r) (void *, size_t, const char *, int), void (*f) (void *));

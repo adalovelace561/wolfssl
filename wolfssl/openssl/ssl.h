@@ -481,13 +481,20 @@ typedef WOLFSSL_OCSP_REQUEST       OCSP_REQUEST;
 typedef WOLFSSL_OCSP_BASICRESP     OCSP_BASICRESP;
 typedef WOLFSSL_OCSP_REQ_CTX       OCSP_REQ_CTX;
 typedef WOLFSSL_OCSP_ONEREQ        OCSP_ONEREQ;
+typedef WOLFSSL_COMP               SSL_COMP;
+typedef WOLFSSL_CRYPTO_THREADID    CRYPTO_THREADID;
 
 #define V_OCSP_CERTSTATUS_UNKNOWN            2
 #define X509_V_ERR_APPLICATION_VERIFICATION 50
 #define V_OCSP_CERTSTATUS_GOOD               0
 #define V_OCSP_CERTSTATUS_REVOKED            1
 #define OCSP_RESPONSE_STATUS_SUCCESSFUL      0
-
+#define PSK_MAX_IDENTITY_LEN                 128
+#define PSK_MAX_PSK_LEN                      256
+#define SSL_TLSEXT_ERR_OK                    0
+#define SSL_TLSEXT_ERR_ALERT_FATAL           2
+#define SSL_TLSEXT_ERR_NOACK                 3
+#define TLSEXT_NAMETYPE_host_name            0
 
 #define ASN1_GENERALIZEDTIME    WOLFSSL_ASN1_TIME
 #define X509_NAME_cmp           wolfSSL_X509_NAME_cmp
