@@ -1776,6 +1776,14 @@ then
         AM_CFLAGS="-DOPENSSL_EXTRA $AM_CFLAGS"
     fi
 
+    # Requires OCSP make sure on
+    if test "x$ENABLED_OCSP" = "xno"
+    then
+        ENABLED_OCSP="yes"
+        AM_CFLAGS="$AM_CFLAGS -DHAVE_OCSP"
+        AM_CONDITIONAL([BUILD_OCSP], [test "x$ENABLED_OCSP" = "xyes"])
+    fi
+
     # Requires coding make sure on
     if test "x$ENABLED_CODING" = "xno"
     then
@@ -1796,7 +1804,7 @@ then
         AM_CFLAGS="$AM_CFLAGS -DHAVE_CRL"
         AM_CONDITIONAL([BUILD_CRL], [test "x$ENABLED_CRL" = "xyes"])
     fi
-    AM_CFLAGS="$AM_CFLAGS -DHAVE_STUNNEL"
+    AM_CFLAGS="$AM_CFLAGS -DHAVE_STUNNEL -DWOLFSSL_ALWAYS_VERIFY_CB"
 fi
 
 
