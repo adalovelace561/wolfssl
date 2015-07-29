@@ -1562,6 +1562,8 @@ typedef struct WOLFSSL_OCSP_REQUEST   WOLFSSL_OCSP_REQUEST;
 typedef struct WOLFSSL_OCSP_BASICRESP WOLFSSL_OCSP_BASICRESP;
 typedef struct WOLFSSL_OCSP_REQ_CTX   WOLFSSL_OCSP_REQ_CTX;
 typedef struct WOLFSSL_OCSP_ONEREQ    WOLFSSL_OCSP_ONEREQ;
+typedef struct WOLFSSL_SSL_COMP       WOLFSSL_SSL_COMP;
+
 
 WOLFSSL_API int wolfSSL_CRYPTO_set_mem_ex_functions(void *(*m) (size_t, const char *, int),
     void *(*r) (void *, size_t, const char *, int), void (*f) (void *));
@@ -1646,12 +1648,10 @@ WOLFSSL_API int wolfSSL_OCSP_BASICRESP_free(WOLFSSL_OCSP_BASICRESP*);
 WOLFSSL_API
 WOLFSSL_OCSP_BASICRESP *wolfSSL_OCSP_response_get1_basic(WOLFSSL_OCSP_RESPONSE*);
 
-WOLFSSL_API
-int wolfSSL_OCSP_resp_find_status(WOLFSSL_OCSP_BASICRESP*,
+
+WOLFSSL_API int wolfSSL_OCSP_resp_find_status(WOLFSSL_OCSP_BASICRESP*,
         WOLFSSL_OCSP_CERTID *, int *, int *,
-        WOLFSSL_ASN1_STRING **,
-        WOLFSSL_ASN1_STRING **,
-        WOLFSSL_ASN1_STRING **);
+        WOLFSSL_ASN1_TIME**, WOLFSSL_ASN1_TIME**, WOLFSSL_ASN1_TIME**);
 
 WOLFSSL_API int wolfSSL_OCSP_request_add1_nonce(WOLFSSL_OCSP_REQUEST *,
         unsigned char *, int );
@@ -1662,8 +1662,9 @@ WOLFSSL_OCSP_ONEREQ *wolfSSL_OCSP_request_add0_id(WOLFSSL_OCSP_REQUEST *,
 
 WOLFSSL_API const char *wolfSSL_OCSP_crl_reason_str(long );
 
-WOLFSSL_API int wolfSSL_OCSP_check_validity(WOLFSSL_ASN1_STRING *,
-                        WOLFSSL_ASN1_STRING *, long, long);
+WOLFSSL_API int wolfSSL_OCSP_check_validity(WOLFSSL_ASN1_TIME *,
+                        WOLFSSL_ASN1_TIME*, long, long);
+
 WOLFSSL_API
 STACK_OF(WOLFSSL_X509)* wolfSSL_X509_STORE_CTX_get_chain(WOLFSSL_X509_STORE_CTX *);
 
