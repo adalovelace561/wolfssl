@@ -46,7 +46,11 @@
 
 #if defined(DEBUG_WOLFSSL) || defined(SHOW_SECRETS) || defined(CHACHA_AEAD_TEST)
     #ifdef FREESCALE_MQX
-        #include <fio.h>
+        #if MQX_USE_IO_OLD
+            #include <fio.h>
+        #else
+            #include <nio.h>
+        #endif
     #else
         #include <stdio.h>
     #endif
@@ -244,7 +248,7 @@ static int QSH_FreeAll(WOLFSSL* ssl)
 
 
 #ifdef HAVE_NTRU
-static RNG* rng;
+static WC_RNG* rng;
 static wolfSSL_Mutex* rngMutex;
 
 static word32 GetEntropy(unsigned char* out, word32 num_bytes)
@@ -252,7 +256,7 @@ static word32 GetEntropy(unsigned char* out, word32 num_bytes)
     int ret = 0;
 
     if (rng == NULL) {
-        if ((rng = XMALLOC(sizeof(RNG), 0, DYNAMIC_TYPE_TLSX)) == NULL)
+        if ((rng = XMALLOC(sizeof(WC_RNG), 0, DYNAMIC_TYPE_TLSX)) == NULL)
             return DRBG_OUT_OF_MEMORY;
         wc_InitRng(rng);
     }
@@ -1765,7 +1769,7 @@ int InitSSL(WOLFSSL* ssl, WOLFSSL_CTX* ctx)
 #endif /* NO_PSK */
 
     /* RNG */
-    ssl->rng = (RNG*)XMALLOC(sizeof(RNG), ssl->heap, DYNAMIC_TYPE_RNG);
+    ssl->rng = (WC_RNG*)XMALLOC(sizeof(WC_RNG), ssl->heap, DYNAMIC_TYPE_RNG);
     if (ssl->rng == NULL) {
         WOLFSSL_MSG("RNG Memory error");
         return MEMORY_E;
@@ -6684,6 +6688,22 @@ int ProcessReply(WOLFSSL* ssl)
                             AddLateRecordHeader(&ssl->curRL, &ssl->timeoutInfo);
                         }
                     #endif
+
+                    /* Check for duplicate CCS message in DTLS mode.
+                     * DTLS allows for duplicate messages, and it should be
+                     * skipped. */
+                    if (ssl->options.dtls &&
+                        ssl->msgsReceived.got_change_cipher) {
+
+                        WOLFSSL_MSG("Duplicate ChangeCipher msg");
+                        if (ssl->curSize != 1) {
+                            WOLFSSL_MSG("Malicious or corrupted"
+                                        " duplicate ChangeCipher msg");
+                            return LENGTH_ERROR;
+                        }
+                        ssl->buffers.inputBuffer.idx++;
+                        break;
+                    }
 
                     ret = SanityCheckMsgReceived(ssl, change_cipher_hs);
                     if (ret != 0)

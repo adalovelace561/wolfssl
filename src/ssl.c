@@ -50,6 +50,8 @@
     #include <wolfssl/openssl/rsa.h>
     #include <wolfssl/openssl/pem.h>
     #include <wolfssl/openssl/ec.h>
+    #include <wolfssl/openssl/ec25519.h>
+    #include <wolfssl/openssl/ed25519.h>
     #include <wolfssl/openssl/ecdsa.h>
     #include <wolfssl/openssl/ecdh.h>
     /* openssl headers end, wolfssl internal headers next */
@@ -62,6 +64,8 @@
     #ifdef HAVE_STUNNEL
         #include <wolfssl/openssl/ocsp.h>
     #endif /* WITH_STUNNEL */
+    #include <wolfssl/wolfcrypt/curve25519.h>
+    #include <wolfssl/wolfcrypt/ed25519.h>
     #ifdef WOLFSSL_SHA512
         #include <wolfssl/wolfcrypt/sha512.h>
     #endif
@@ -10919,7 +10923,7 @@ int wolfSSL_cmp_peer_cert_to_file(WOLFSSL* ssl, const char *fname)
 #endif
 
 
-static RNG globalRNG;
+static WC_RNG globalRNG;
 static int initGlobalRNG = 0;
 
 /* SSL_SUCCESS on ok */
@@ -10946,19 +10950,19 @@ int wolfSSL_RAND_seed(const void* seed, int len)
 /* SSL_SUCCESS on ok */
 int wolfSSL_RAND_bytes(unsigned char* buf, int num)
 {
-    int    ret = 0;
-    int    initTmpRng = 0;
-    RNG*   rng = NULL;
+    int     ret = 0;
+    int     initTmpRng = 0;
+    WC_RNG* rng = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-    RNG*   tmpRNG = NULL;
+    WC_RNG* tmpRNG = NULL;
 #else
-    RNG    tmpRNG[1];
+    WC_RNG  tmpRNG[1];
 #endif
 
     WOLFSSL_ENTER("wolfSSL_RAND_bytes");
 
 #ifdef WOLFSSL_SMALL_STACK
-    tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (tmpRNG == NULL)
         return ret;
 #endif
@@ -11284,12 +11288,12 @@ int wolfSSL_BN_rand(WOLFSSL_BIGNUM* bn, int bits, int top, int bottom)
     int           ret    = 0;
     int           len    = bits / 8;
     int           initTmpRng = 0;
-    RNG*          rng    = NULL;
+    WC_RNG*       rng    = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-    RNG*          tmpRNG = NULL;
+    WC_RNG*       tmpRNG = NULL;
     byte*         buff   = NULL;
 #else
-    RNG           tmpRNG[1];
+    WC_RNG        tmpRNG[1];
     byte          buff[1024];
 #endif
 
@@ -11302,7 +11306,7 @@ int wolfSSL_BN_rand(WOLFSSL_BIGNUM* bn, int bits, int top, int bottom)
 
 #ifdef WOLFSSL_SMALL_STACK
     buff   = (byte*)XMALLOC(1024,        NULL, DYNAMIC_TYPE_TMP_BUFFER);
-    tmpRNG = (RNG*) XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*) XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (buff == NULL || tmpRNG == NULL) {
         XFREE(buff,   NULL, DYNAMIC_TYPE_TMP_BUFFER);
         XFREE(tmpRNG, NULL, DYNAMIC_TYPE_TMP_BUFFER);
@@ -11925,23 +11929,23 @@ int wolfSSL_DH_generate_key(WOLFSSL_DH* dh)
     word32         pubSz  = 768;
     word32         privSz = 768;
     int            initTmpRng = 0;
-    RNG*           rng    = NULL;
+    WC_RNG*        rng    = NULL;
 #ifdef WOLFSSL_SMALL_STACK
     unsigned char* pub    = NULL;
     unsigned char* priv   = NULL;
-    RNG*           tmpRNG = NULL;
+    WC_RNG*        tmpRNG = NULL;
 #else
     unsigned char  pub [768];
     unsigned char  priv[768];
-    RNG            tmpRNG[1];
+    WC_RNG         tmpRNG[1];
 #endif
 
     WOLFSSL_MSG("wolfSSL_DH_generate_key");
 
 #ifdef WOLFSSL_SMALL_STACK
-    tmpRNG = (RNG*)XMALLOC(sizeof(RNG),      NULL, DYNAMIC_TYPE_TMP_BUFFER);
-    pub    = (unsigned char*)XMALLOC(pubSz,  NULL, DYNAMIC_TYPE_TMP_BUFFER);
-    priv   = (unsigned char*)XMALLOC(privSz, NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    pub    = (unsigned char*)XMALLOC(pubSz,   NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    priv   = (unsigned char*)XMALLOC(privSz,  NULL, DYNAMIC_TYPE_TMP_BUFFER);
 
     if (tmpRNG == NULL || pub == NULL || priv == NULL) {
         XFREE(tmpRNG, NULL, DYNAMIC_TYPE_TMP_BUFFER);
@@ -12529,13 +12533,13 @@ int wolfSSL_RSA_generate_key_ex(WOLFSSL_RSA* rsa, int bits, WOLFSSL_BIGNUM* bn,
 #ifdef WOLFSSL_KEY_GEN
     {
     #ifdef WOLFSSL_SMALL_STACK
-        RNG* rng = NULL;
+        WC_RNG* rng = NULL;
     #else
-        RNG  rng[1];
+        WC_RNG  rng[1];
     #endif
 
     #ifdef WOLFSSL_SMALL_STACK
-        rng = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+        rng = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
         if (rng == NULL)
             return SSL_FAILURE;
     #endif
@@ -12638,8 +12642,7 @@ int wolfSSL_DSA_generate_key(WOLFSSL_DSA* dsa)
         return SSL_FAILURE;
     }
 
-    if (dsa->inSet == 0)
-    {
+    if (dsa->inSet == 0) {
         WOLFSSL_MSG("No DSA internal set, do it");
 
         if (SetDsaInternal(dsa) != SSL_SUCCESS) {
@@ -12651,15 +12654,15 @@ int wolfSSL_DSA_generate_key(WOLFSSL_DSA* dsa)
 #ifdef WOLFSSL_KEY_GEN
     {
         int initTmpRng = 0;
-        RNG *rng = NULL;
+        WC_RNG *rng = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-        RNG *tmpRNG = NULL;
+        WC_RNG *tmpRNG = NULL;
 #else
-        RNG tmpRNG[1];
+        WC_RNG tmpRNG[1];
 #endif
 
 #ifdef WOLFSSL_SMALL_STACK
-        tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+        tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
         if (tmpRNG == NULL)
             return SSL_FATAL_ERROR;
 #endif
@@ -12724,15 +12727,15 @@ int wolfSSL_DSA_generate_parameters_ex(WOLFSSL_DSA* dsa, int bits,
 #ifdef WOLFSSL_KEY_GEN
     {
         int initTmpRng = 0;
-        RNG *rng = NULL;
+        WC_RNG *rng = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-        RNG *tmpRNG = NULL;
+        WC_RNG *tmpRNG = NULL;
 #else
-        RNG tmpRNG[1];
+        WC_RNG tmpRNG[1];
 #endif
 
 #ifdef WOLFSSL_SMALL_STACK
-        tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+        tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
         if (tmpRNG == NULL)
             return SSL_FATAL_ERROR;
 #endif
@@ -12776,13 +12779,13 @@ int wolfSSL_DSA_generate_parameters_ex(WOLFSSL_DSA* dsa, int bits,
 int wolfSSL_DSA_do_sign(const unsigned char* d, unsigned char* sigRet,
                        WOLFSSL_DSA* dsa)
 {
-    int    ret = SSL_FATAL_ERROR;
-    int    initTmpRng = 0;
-    RNG*   rng = NULL;
+    int     ret = SSL_FATAL_ERROR;
+    int     initTmpRng = 0;
+    WC_RNG* rng = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-    RNG*   tmpRNG = NULL;
+    WC_RNG* tmpRNG = NULL;
 #else
-    RNG    tmpRNG[1];
+    WC_RNG  tmpRNG[1];
 #endif
 
     WOLFSSL_ENTER("wolfSSL_DSA_do_sign");
@@ -12803,7 +12806,7 @@ int wolfSSL_DSA_do_sign(const unsigned char* d, unsigned char* sigRet,
     }
 
 #ifdef WOLFSSL_SMALL_STACK
-    tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (tmpRNG == NULL)
         return SSL_FATAL_ERROR;
 #endif
@@ -12875,17 +12878,17 @@ int wolfSSL_RSA_sign(int type, const unsigned char* m,
                            unsigned int mLen, unsigned char* sigRet,
                            unsigned int* sigLen, WOLFSSL_RSA* rsa)
 {
-    word32 outLen;
-    word32 signSz;
-    int    initTmpRng = 0;
-    RNG*   rng        = NULL;
-    int    ret        = 0;
+    word32  outLen;
+    word32  signSz;
+    int     initTmpRng = 0;
+    WC_RNG* rng        = NULL;
+    int     ret        = 0;
 #ifdef WOLFSSL_SMALL_STACK
-    RNG*   tmpRNG     = NULL;
-    byte*  encodedSig = NULL;
+    WC_RNG* tmpRNG     = NULL;
+    byte*   encodedSig = NULL;
 #else
-    RNG    tmpRNG[1];
-    byte   encodedSig[MAX_ENCODED_SIG_SZ];
+    WC_RNG  tmpRNG[1];
+    byte    encodedSig[MAX_ENCODED_SIG_SZ];
 #endif
 
     WOLFSSL_MSG("wolfSSL_RSA_sign");
@@ -12913,7 +12916,7 @@ int wolfSSL_RSA_sign(int type, const unsigned char* m,
     outLen = (word32)wolfSSL_BN_num_bytes(rsa->n);
 
 #ifdef WOLFSSL_SMALL_STACK
-    tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (tmpRNG == NULL)
         return 0;
 
@@ -13499,7 +13502,7 @@ static int EncryptDerKey(byte *der, int *derSz, const EVP_CIPHER* cipher,
  */
 int wolfSSL_PEM_write_mem_RSAPrivateKey(RSA* rsa, const EVP_CIPHER* cipher,
                                         unsigned char* passwd, int passwdSz,
-                                        byte **pem, int *plen)
+                                        unsigned char **pem, int *plen)
 {
     byte *der, *tmp, *cipherInfo = NULL;
     int  der_max_len = 0, derSz = 0;
@@ -14024,12 +14027,12 @@ int wolfSSL_EC_KEY_set_group(WOLFSSL_EC_KEY *key, WOLFSSL_EC_GROUP *group)
 
 int wolfSSL_EC_KEY_generate_key(WOLFSSL_EC_KEY *key)
 {
-    int    initTmpRng = 0;
-    RNG*   rng = NULL;
+    int     initTmpRng = 0;
+    WC_RNG* rng = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-    RNG*   tmpRNG = NULL;
+    WC_RNG* tmpRNG = NULL;
 #else
-    RNG    tmpRNG[1];
+    WC_RNG  tmpRNG[1];
 #endif
 
     WOLFSSL_ENTER("wolfSSL_EC_KEY_generate_key");
@@ -14041,7 +14044,7 @@ int wolfSSL_EC_KEY_generate_key(WOLFSSL_EC_KEY *key)
     }
 
 #ifdef WOLFSSL_SMALL_STACK
-    tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (tmpRNG == NULL)
         return 0;
 #endif
@@ -14659,12 +14662,12 @@ WOLFSSL_ECDSA_SIG *wolfSSL_ECDSA_do_sign(const unsigned char *d, int dlen,
                                          WOLFSSL_EC_KEY *key)
 {
     WOLFSSL_ECDSA_SIG *sig = NULL;
-    int    initTmpRng = 0;
-    RNG*   rng = NULL;
+    int     initTmpRng = 0;
+    WC_RNG* rng = NULL;
 #ifdef WOLFSSL_SMALL_STACK
-    RNG*   tmpRNG = NULL;
+    WC_RNG* tmpRNG = NULL;
 #else
-    RNG    tmpRNG[1];
+    WC_RNG  tmpRNG[1];
 #endif
 
     WOLFSSL_ENTER("wolfSSL_ECDSA_do_sign");
@@ -14686,7 +14689,7 @@ WOLFSSL_ECDSA_SIG *wolfSSL_ECDSA_do_sign(const unsigned char *d, int dlen,
     }
 
 #ifdef WOLFSSL_SMALL_STACK
-    tmpRNG = (RNG*)XMALLOC(sizeof(RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
     if (tmpRNG == NULL)
         return NULL;
 #endif
@@ -14870,7 +14873,7 @@ int wolfSSL_PEM_write_bio_ECPrivateKey(WOLFSSL_BIO* bio, WOLFSSL_EC_KEY* ecc,
 int wolfSSL_PEM_write_mem_ECPrivateKey(WOLFSSL_EC_KEY* ecc,
                                        const EVP_CIPHER* cipher,
                                        unsigned char* passwd, int passwdSz,
-                                       byte **pem, int *plen)
+                                       unsigned char **pem, int *plen)
 {
     byte *der, *tmp, *cipherInfo = NULL;
     int  der_max_len = 0, derSz = 0;
@@ -15043,7 +15046,7 @@ int wolfSSL_PEM_write_bio_DSAPrivateKey(WOLFSSL_BIO* bio, WOLFSSL_DSA* dsa,
 int wolfSSL_PEM_write_mem_DSAPrivateKey(WOLFSSL_DSA* dsa,
                                         const EVP_CIPHER* cipher,
                                         unsigned char* passwd, int passwdSz,
-                                        byte **pem, int *plen)
+                                        unsigned char **pem, int *plen)
 {
     byte *der, *tmp, *cipherInfo = NULL;
     int  der_max_len = 0, derSz = 0;
@@ -16618,3 +16621,313 @@ WOLFSSL_STRING wolfSSL_sk_WOLFSSL_STRING_value(
     return 0;
 }
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
+
+#if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
+/* return 1 if success, 0 if error
+ * output keys are little endian format
+ */
+int wolfSSL_EC25519_generate_key(unsigned char *priv, unsigned int *privSz,
+                                 unsigned char *pub, unsigned int *pubSz)
+{
+#ifndef WOLFSSL_KEY_GEN
+    WOLFSSL_MSG("No Key Gen built in");
+    return SSL_FAILURE;
+#else /* WOLFSSL_KEY_GEN */
+    int ret = SSL_FAILURE;
+    int initTmpRng = 0;
+    WC_RNG *rng = NULL;
+#ifdef WOLFSSL_SMALL_STACK
+    WC_RNG *tmpRNG = NULL;
+#else
+    WC_RNG tmpRNG[1];
+#endif
+
+    WOLFSSL_ENTER("wolfSSL_EC25519_generate_key");
+
+    if (priv == NULL || privSz == NULL || *privSz < CURVE25519_KEYSIZE ||
+        pub == NULL || pubSz == NULL || *pubSz < CURVE25519_KEYSIZE) {
+        WOLFSSL_MSG("Bad arguments");
+        return SSL_FAILURE;
+    }
+
+#ifdef WOLFSSL_SMALL_STACK
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    if (tmpRNG == NULL)
+        return SSL_FAILURE;
+#endif
+    if (wc_InitRng(tmpRNG) == 0) {
+        rng = tmpRNG;
+        initTmpRng = 1;
+    }
+    else {
+        WOLFSSL_MSG("Bad RNG Init, trying global");
+        if (initGlobalRNG == 0)
+            WOLFSSL_MSG("Global RNG no Init");
+        else
+            rng = &globalRNG;
+    }
+
+    if (rng) {
+        curve25519_key key;
+
+        if (wc_curve25519_init(&key) != MP_OKAY)
+            WOLFSSL_MSG("wc_curve25519_init failed");
+        else if (wc_curve25519_make_key(rng, CURVE25519_KEYSIZE, &key)!=MP_OKAY)
+            WOLFSSL_MSG("wc_curve25519_make_key failed");
+        /* export key pair */
+        else if (wc_curve25519_export_key_raw_ex(&key, priv, privSz, pub,
+                                                 pubSz, EC25519_LITTLE_ENDIAN)
+                 != MP_OKAY)
+            WOLFSSL_MSG("wc_curve25519_export_key_raw_ex failed");
+        else
+            ret = SSL_SUCCESS;
+
+        wc_curve25519_free(&key);
+    }
+
+    if (initTmpRng)
+        wc_FreeRng(tmpRNG);
+
+#ifdef WOLFSSL_SMALL_STACK
+    XFREE(tmpRNG, NULL, DYNAMIC_TYPE_TMP_BUFFER);
+#endif
+
+    return ret;
+#endif /* WOLFSSL_KEY_GEN */
+}
+
+/* return 1 if success, 0 if error
+ * input and output keys are little endian format
+ */
+int wolfSSL_EC25519_shared_key(unsigned char *shared, unsigned int *sharedSz,
+                               const unsigned char *priv, unsigned int privSz,
+                               const unsigned char *pub, unsigned int pubSz)
+{
+#ifndef WOLFSSL_KEY_GEN
+    WOLFSSL_MSG("No Key Gen built in");
+    return SSL_FAILURE;
+#else /* WOLFSSL_KEY_GEN */
+    int ret = SSL_FAILURE;
+    curve25519_key privkey, pubkey;
+
+    WOLFSSL_ENTER("wolfSSL_EC25519_shared_key");
+
+    if (shared == NULL || sharedSz == NULL || *sharedSz < CURVE25519_KEYSIZE ||
+        priv == NULL || privSz < CURVE25519_KEYSIZE ||
+        pub == NULL || pubSz < CURVE25519_KEYSIZE) {
+        WOLFSSL_MSG("Bad arguments");
+        return SSL_FAILURE;
+    }
+
+    /* import private key */
+    if (wc_curve25519_init(&privkey) != MP_OKAY) {
+        WOLFSSL_MSG("wc_curve25519_init privkey failed");
+        return ret;
+    }
+    if (wc_curve25519_import_private_ex(priv, privSz, &privkey,
+                                        EC25519_LITTLE_ENDIAN) != MP_OKAY) {
+        WOLFSSL_MSG("wc_curve25519_import_private_ex failed");
+        wc_curve25519_free(&privkey);
+        return ret;
+    }
+
+    /* import public key */
+    if (wc_curve25519_init(&pubkey) != MP_OKAY) {
+        WOLFSSL_MSG("wc_curve25519_init pubkey failed");
+        wc_curve25519_free(&privkey);
+        return ret;
+    }
+    if (wc_curve25519_import_public_ex(pub, pubSz, &pubkey,
+                                       EC25519_LITTLE_ENDIAN) != MP_OKAY) {
+        WOLFSSL_MSG("wc_curve25519_import_public_ex failed");
+        wc_curve25519_free(&privkey);
+        wc_curve25519_free(&pubkey);
+        return ret;
+    }
+
+    if (wc_curve25519_shared_secret_ex(&privkey, &pubkey,
+                                       shared, sharedSz,
+                                       EC25519_LITTLE_ENDIAN) != MP_OKAY)
+        WOLFSSL_MSG("wc_curve25519_shared_secret_ex failed");
+    else
+        ret = SSL_SUCCESS;
+
+    wc_curve25519_free(&privkey);
+    wc_curve25519_free(&pubkey);
+
+    return ret;
+#endif /* WOLFSSL_KEY_GEN */
+}
+#endif /* OPENSSL_EXTRA && HAVE_CURVE25519 */
+
+#if defined(OPENSSL_EXTRA) && defined(HAVE_ED25519)
+/* return 1 if success, 0 if error
+ * output keys are little endian format
+ */
+int wolfSSL_ED25519_generate_key(unsigned char *priv, unsigned int *privSz,
+                                 unsigned char *pub, unsigned int *pubSz)
+{
+#ifndef WOLFSSL_KEY_GEN
+    WOLFSSL_MSG("No Key Gen built in");
+    return SSL_FAILURE;
+#else /* WOLFSSL_KEY_GEN */
+    int ret = SSL_FAILURE;
+    int initTmpRng = 0;
+    WC_RNG *rng = NULL;
+#ifdef WOLFSSL_SMALL_STACK
+    WC_RNG *tmpRNG = NULL;
+#else
+    WC_RNG tmpRNG[1];
+#endif
+
+    WOLFSSL_ENTER("wolfSSL_ED25519_generate_key");
+
+    if (priv == NULL || privSz == NULL || *privSz < ED25519_PRV_KEY_SIZE ||
+        pub == NULL || pubSz == NULL || *pubSz < ED25519_PUB_KEY_SIZE) {
+        WOLFSSL_MSG("Bad arguments");
+        return SSL_FAILURE;
+    }
+
+#ifdef WOLFSSL_SMALL_STACK
+    tmpRNG = (WC_RNG*)XMALLOC(sizeof(WC_RNG), NULL, DYNAMIC_TYPE_TMP_BUFFER);
+    if (tmpRNG == NULL)
+        return SSL_FATAL_ERROR;
+#endif
+    if (wc_InitRng(tmpRNG) == 0) {
+        rng = tmpRNG;
+        initTmpRng = 1;
+    }
+    else {
+        WOLFSSL_MSG("Bad RNG Init, trying global");
+        if (initGlobalRNG == 0)
+            WOLFSSL_MSG("Global RNG no Init");
+        else
+            rng = &globalRNG;
+    }
+
+    if (rng) {
+        ed25519_key key;
+
+        if (wc_ed25519_init(&key) != MP_OKAY)
+            WOLFSSL_MSG("wc_ed25519_init failed");
+        else if (wc_ed25519_make_key(rng, ED25519_KEY_SIZE, &key)!=MP_OKAY)
+            WOLFSSL_MSG("wc_ed25519_make_key failed");
+        /* export private key */
+        else if (wc_ed25519_export_key(&key, priv, privSz, pub, pubSz)!=MP_OKAY)
+            WOLFSSL_MSG("wc_ed25519_export_key failed");
+        else
+            ret = SSL_SUCCESS;
+
+        wc_ed25519_free(&key);
+    }
+
+    if (initTmpRng)
+        wc_FreeRng(tmpRNG);
+
+#ifdef WOLFSSL_SMALL_STACK
+    XFREE(tmpRNG, NULL, DYNAMIC_TYPE_TMP_BUFFER);
+#endif
+
+    return ret;
+#endif /* WOLFSSL_KEY_GEN */
+}
+
+/* return 1 if success, 0 if error
+ * input and output keys are little endian format
+ * priv is a buffer containing private and public part of key
+ */
+int wolfSSL_ED25519_sign(const unsigned char *msg, unsigned int msgSz,
+                         const unsigned char *priv, unsigned int privSz,
+                         unsigned char *sig, unsigned int *sigSz)
+{
+#ifndef WOLFSSL_KEY_GEN
+    WOLFSSL_MSG("No Key Gen built in");
+    return SSL_FAILURE;
+#else /* WOLFSSL_KEY_GEN */
+    ed25519_key key;
+    int ret = SSL_FAILURE;
+
+    WOLFSSL_ENTER("wolfSSL_ED25519_sign");
+
+    if (priv == NULL || privSz != ED25519_PRV_KEY_SIZE ||
+        msg == NULL || sig == NULL || *sigSz < ED25519_SIG_SIZE) {
+        WOLFSSL_MSG("Bad arguments");
+        return SSL_FAILURE;
+    }
+
+    /* import key */
+    if (wc_ed25519_init(&key) != MP_OKAY) {
+        WOLFSSL_MSG("wc_curve25519_init failed");
+        return ret;
+    }
+    if (wc_ed25519_import_private_key(priv, privSz/2,
+                                      priv+(privSz/2), ED25519_PUB_KEY_SIZE,
+                                      &key) != MP_OKAY){
+        WOLFSSL_MSG("wc_ed25519_import_private failed");
+        wc_ed25519_free(&key);
+        return ret;
+    }
+
+    if (wc_ed25519_sign_msg(msg, msgSz, sig, sigSz, &key) != MP_OKAY)
+        WOLFSSL_MSG("wc_curve25519_shared_secret_ex failed");
+    else
+        ret = SSL_SUCCESS;
+
+    wc_ed25519_free(&key);
+
+    return ret;
+#endif /* WOLFSSL_KEY_GEN */
+}
+
+/* return 1 if success, 0 if error
+ * input and output keys are little endian format
+ * pub is a buffer containing public part of key
+ */
+int wolfSSL_ED25519_verify(const unsigned char *msg, unsigned int msgSz,
+                           const unsigned char *pub, unsigned int pubSz,
+                           const unsigned char *sig, unsigned int sigSz)
+{
+#ifndef WOLFSSL_KEY_GEN
+    WOLFSSL_MSG("No Key Gen built in");
+    return SSL_FAILURE;
+#else /* WOLFSSL_KEY_GEN */
+    ed25519_key key;
+    int ret = SSL_FAILURE, check = 0;
+
+    WOLFSSL_ENTER("wolfSSL_ED25519_verify");
+
+    if (pub == NULL || pubSz != ED25519_PUB_KEY_SIZE ||
+        msg == NULL || sig == NULL || sigSz != ED25519_SIG_SIZE) {
+        WOLFSSL_MSG("Bad arguments");
+        return SSL_FAILURE;
+    }
+
+    /* import key */
+    if (wc_ed25519_init(&key) != MP_OKAY) {
+        WOLFSSL_MSG("wc_curve25519_init failed");
+        return ret;
+    }
+    if (wc_ed25519_import_public(pub, pubSz, &key) != MP_OKAY){
+        WOLFSSL_MSG("wc_ed25519_import_public failed");
+        wc_ed25519_free(&key);
+        return ret;
+    }
+
+    if ((ret = wc_ed25519_verify_msg((byte*)sig, sigSz, msg, msgSz,
+                                     &check, &key)) != MP_OKAY) {
+        WOLFSSL_MSG("wc_ed25519_verify_msg failed");
+        fprintf(stderr, "err code = %d, sigSz=%d, msgSz=%d\n", ret, sigSz, msgSz);
+    }
+    else if (!check)
+        WOLFSSL_MSG("wc_ed25519_verify_msg failed (signature invalid)");
+    else
+        ret = SSL_SUCCESS;
+
+    wc_ed25519_free(&key);
+
+    return ret;
+#endif /* WOLFSSL_KEY_GEN */
+}
+
+#endif /* OPENSSL_EXTRA && HAVE_ED25519 */
+

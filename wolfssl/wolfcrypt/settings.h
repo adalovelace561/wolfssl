@@ -118,6 +118,12 @@
 #endif
 
 
+/* make sure old RNG name is used with CTaoCrypt FIPS */
+#ifdef HAVE_FIPS
+    #define WC_RNG RNG
+#endif
+
+
 #ifdef IPHONE
     #define SIZEOF_LONG_LONG 8
 #endif
@@ -178,6 +184,7 @@
     #define USE_FAST_MATH
     #define TFM_TIMING_RESISTANT
     #define NEED_AES_TABLES
+    #define WOLFSSL_HAVE_MIN
 #endif
 
 #ifdef WOLFSSL_MICROCHIP_PIC32MZ
@@ -307,6 +314,10 @@
 
 
 #ifdef FREERTOS
+    #include "FreeRTOS.h"
+    /* FreeRTOS pvPortRealloc() only in AVR32_UC3 port */
+    #define XMALLOC(s, h, type)  pvPortMalloc((s))
+    #define XFREE(p, h, type)    vPortFree((p))
     #ifndef NO_WRITEV
         #define NO_WRITEV
     #endif
@@ -328,7 +339,6 @@
     #endif
 
     #ifndef SINGLE_THREADED
-        #include "FreeRTOS.h"
         #include "semphr.h"
     #endif
 #endif
@@ -454,7 +464,11 @@
     #include "mqx.h"
     #ifndef NO_FILESYSTEM
         #include "mfs.h"
-        #include "fio.h"
+        #if MQX_USE_IO_OLD
+            #include "fio.h"
+        #else
+            #include "nio.h"
+        #endif
     #endif
     #ifndef SINGLE_THREADED
         #include "mutex.h"

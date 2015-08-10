@@ -331,7 +331,9 @@ typedef byte word24[3];
     #endif
 
     #if !defined(NO_HC128) && !defined(NO_RSA) && !defined(NO_TLS)
-        #define BUILD_TLS_RSA_WITH_HC_128_MD5
+        #ifndef NO_MD5
+            #define BUILD_TLS_RSA_WITH_HC_128_MD5
+        #endif
         #if !defined(NO_SHA)
             #define BUILD_TLS_RSA_WITH_HC_128_SHA
         #endif
@@ -2219,7 +2221,7 @@ struct WOLFSSL {
     HS_Hashes*      hsHashes;
     void*           IOCB_ReadCtx;
     void*           IOCB_WriteCtx;
-    RNG*            rng;
+    WC_RNG*         rng;
     void*           verifyCbCtx;        /* cert verify callback user ctx*/
     VerifyCallback  verifyCallback;     /* cert verification callback */
     void*           heap;               /* for user overrides */
