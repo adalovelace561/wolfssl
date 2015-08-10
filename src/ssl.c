@@ -66,6 +66,8 @@
     #ifdef HAVE_STUNNEL
         #include <wolfssl/openssl/ocsp.h>
     #endif /* WITH_STUNNEL */
+    #include <wolfssl/wolfcrypt/curve25519.h>
+    #include <wolfssl/wolfcrypt/ed25519.h>
     #ifdef WOLFSSL_SHA512
         #include <wolfssl/wolfcrypt/sha512.h>
     #endif
