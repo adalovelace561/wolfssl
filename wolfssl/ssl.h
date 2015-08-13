@@ -573,11 +573,13 @@ enum {
     OCSP_TRUSTOTHER  = 512,
     OCSP_RESPID_KEY  = 1024,
     OCSP_NOTIME      = 2048,
+
 #ifndef HAVE_STUNNEL
     OCSP_CERTID   = 2,
     OCSP_REQUEST  = 4,
     OCSP_RESPONSE = 8,
     OCSP_BASICRESP = 16,
+
 #endif
     WOLFSSL_OCSP_URL_OVERRIDE = 1,
     WOLFSSL_OCSP_NO_NONCE     = 2,
@@ -1625,9 +1627,6 @@ WOLFSSL_API int wolfSSL_X509_NAME_get_sz(WOLFSSL_X509_NAME*);
 WOLFSSL_API int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *,
               const WOLFSSL_X509_NAME *);
 
-WOLFSSL_API const unsigned char* wolfSSL_SESSION_get_id(WOLFSSL_SESSION*,
-        unsigned int*);
-
 WOLFSSL_API void wolfSSL_X509_email_free(void *);
 
 WOLFSSL_API WOLFSSL_OCSP_REQUEST* wolfSSL_OCSP_REQUEST_new(void);
@@ -1681,6 +1680,9 @@ WOLFSSL_API const char *wolfSSL_OCSP_cert_status_str(long s);
 WOLFSSL_API int wolfSSL_OCSP_response_status(WOLFSSL_OCSP_RESPONSE *resp);
 
 WOLFSSL_API const char *wolfSSL_OCSP_response_status_str(long s);
+
+WOLFSSL_API const unsigned char* wolfSSL_SESSION_get_id(WOLFSSL_SESSION*,
+                unsigned int*);
 
 #endif /* HAVE_STUNNEL */
 

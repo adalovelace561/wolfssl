@@ -4945,10 +4945,7 @@ static int DoHandShakeMsgType(WOLFSSL* ssl, byte* input, word32* inOutIdx,
     /* hello_request not hashed */
     if (type != hello_request) {
         ret = HashInput(ssl, input + *inOutIdx, size);
-        if (ret != 0){
-            WOLFSSL_MSG("DoHandShakeMsgType: HashInput failed");
-            return ret;
-        }
+        if (ret != 0) return ret;
     }
 
     switch (type) {
@@ -8991,8 +8988,6 @@ Set the enabled cipher suites.
 */
 int SetCipherList(Suites* suites, const char* list)
 {
-    WOLFSSL_MSG("SetCipherList: just entered, below is the list:");
-    WOLFSSL_MSG(list);
     int       ret          = 0;
     int       idx          = 0;
     int       haveRSAsig   = 0;
@@ -9003,15 +8998,11 @@ int SetCipherList(Suites* suites, const char* list)
 
     if (suites == NULL || list == NULL) {
         WOLFSSL_MSG("SetCipherList parameter error");
-        WOLFSSL_MSG("SetCipherList returning: 0 when first entering");
         return 0;
     }
 
-    if (next[0] == 0 || XSTRNCMP(next, "ALL", 3) == 0){
-
-        WOLFSSL_MSG("SetCipherList returning: 1 when first entering");
+    if (next[0] == 0 || XSTRNCMP(next, "ALL", 3) == 0)
         return 1; /* wolfSSL defualt */
-    }
 
     do {
         char*  current = next;
@@ -9057,10 +9048,7 @@ int SetCipherList(Suites* suites, const char* list)
         suites->suiteSz   = (word16)idx;
         InitSuitesHashSigAlgo(suites, haveECDSAsig, haveRSAsig, haveAnon);
     }
-    if(0==ret)
-        WOLFSSL_MSG("SetCipherList returning: 0");
-    if(1==ret)
-        WOLFSSL_MSG("SetCipherList returning: 1");
+
     return ret;
 }
 
@@ -14860,15 +14848,8 @@ int DoSessionTicket(WOLFSSL* ssl,
                     MAX_PSK_KEY_LEN);
 
                 if (ssl->arrays->psk_keySz == 0 ||
-                                       ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN){
-                    if (ssl->arrays->psk_keySz == 0)
-                        WOLFSSL_MSG("Returning PSK_KEY_ERROR because ssl->arrays->psk_keySz == 0 ");
-                    if (ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN)
-                        WOLFSSL_MSG("Returning PSK_KEY_ERROR because ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN ");
-                    WOLFSSL_MSG("ssl->arrays->psk_key is: ");
-                    WOLFSSL_MSG((const char *)ssl->arrays->psk_key);
+                                       ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN)
                     return PSK_KEY_ERROR;
-                }
 
                 /* make psk pre master secret */
                 /* length of key + length 0s + length of key + key */
@@ -15160,16 +15141,7 @@ int DoSessionTicket(WOLFSSL* ssl,
 
                 if (ssl->arrays->psk_keySz == 0 ||
                                        ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN)
-                {
-                    if (ssl->arrays->psk_keySz == 0)
-                        WOLFSSL_MSG("Returning PSK_KEY_ERROR because ssl->arrays->psk_keySz == 0 ");
-                    if (ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN)
-                        WOLFSSL_MSG("Returning PSK_KEY_ERROR because ssl->arrays->psk_keySz > MAX_PSK_KEY_LEN ");
-                    WOLFSSL_MSG("ssl->arrays->psk_key is: ");
-                    WOLFSSL_MSG((const char *)ssl->arrays->psk_key);
-
                     return PSK_KEY_ERROR;
-                }
 
                 c16toa((word16) ssl->arrays->psk_keySz, pms);
                 pms += OPAQUE16_LEN;
