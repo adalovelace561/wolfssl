@@ -16623,6 +16623,69 @@ WOLFSSL_STRING wolfSSL_sk_WOLFSSL_STRING_value(
     return 0;
 }
 
+
+int wolfSSL_set_tlsext_host_name(WOLFSSL* ssl, const char* host_name)
+{
+    int ret;
+    WOLFSSL_ENTER("wolfSSL_set_tlsext_host_name");
+    ret = wolfSSL_UseSNI(ssl, WOLFSSL_SNI_HOST_NAME,
+            host_name, XSTRLEN(host_name));
+    WOLFSSL_LEAVE("wolfSSL_set_tlsext_host_name", ret);
+    return ret;
+}
+
+
+const char * wolfSSL_get_servername(WOLFSSL* ssl, byte type)
+{
+    void * serverName = NULL;
+    if (ssl == NULL)
+        return NULL;
+    TLSX_SNI_GetRequest(ssl->extensions, type, &serverName);
+    return (const char *)serverName;
+}
+
+
+WOLFSSL_CTX* wolfSSL_set_SSL_CTX(WOLFSSL* ssl, WOLFSSL_CTX* ctx)
+{
+    if (ssl && ctx && SetSSL_CTX(ssl, ctx) == SSL_SUCCESS)
+        return ssl->ctx;
+    return NULL;
+}
+
+
+VerifyCallback wolfSSL_CTX_get_verify_callback(WOLFSSL_CTX* ctx)
+{
+    WOLFSSL_ENTER("wolfSSL_CTX_get_verify_callback");
+    if(ctx)
+        return ctx->verifyCallback;
+    return NULL;
+}
+
+
+int wolfSSL_CTX_get_verify_mode(WOLFSSL_CTX* ctx)
+{
+    (void)ctx;
+    WOLFSSL_ENTER("wolfSSL_CTX_get_verify_mode");
+    WOLFSSL_STUB("wolfSSL_CTX_get_verify_mode");
+    WOLFSSL_LEAVE("wolfSSL_CTX_get_verify_mode",0);
+    return 0; 
+}
+
+
+void wolfSSL_CTX_set_servername_callback(WOLFSSL_CTX* ctx, CallbackSniRecv cb)
+{
+    WOLFSSL_ENTER("wolfSSL_CTX_set_servername_callback");
+    if (ctx)
+        ctx->sniRecvCb = cb;
+}
+
+
+void wolfSSL_CTX_set_servername_arg(WOLFSSL_CTX* ctx, void* arg)
+{
+    WOLFSSL_ENTER("wolfSSL_CTX_set_servername_arg");
+    if (ctx)
+        ctx->sniRecvCbArg = arg;
+}
 #endif /* OPENSSL_EXTRA and HAVE_STUNNEL */
 
 #if defined(OPENSSL_EXTRA) && defined(HAVE_CURVE25519)
