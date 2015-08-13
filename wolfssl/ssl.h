@@ -1622,6 +1622,8 @@ WOLFSSL_API int wolfSSL_SESSION_get_ex_new_index(long,void*,void*,void*,
 
 WOLFSSL_API int wolfSSL_X509_NAME_get_sz(WOLFSSL_X509_NAME*);
 
+WOLFSSL_API int wolfSSL_X509_NAME_cmp(const WOLFSSL_X509_NAME *,
+              const WOLFSSL_X509_NAME *);
 
 WOLFSSL_API const unsigned char* wolfSSL_SESSION_get_id(WOLFSSL_SESSION*,
         unsigned int*);

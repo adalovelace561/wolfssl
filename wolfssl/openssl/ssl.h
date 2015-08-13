@@ -524,8 +524,6 @@ typedef WOLFSSL_CRYPTO_THREADID    CRYPTO_THREADID;
 #define OCSP_response_status  wolfSSL_OCSP_response_status
 
 #define OCSP_response_status_str wolfSSL_OCSP_response_status_str
-typedef WOLFSSL_OCSP_CERTID        OCSP_CERTID;
-typedef WOLFSSL_OCSP_RESPONSE      OCSP_RESPONSE;
 
 
 #endif /* HAVE_STUNNEL */
