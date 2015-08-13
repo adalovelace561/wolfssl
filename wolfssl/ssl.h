@@ -1688,5 +1688,4 @@ WOLFSSL_API const char *wolfSSL_OCSP_response_status_str(long s);
     }  /* extern "C" */
 #endif
 
-
 #endif /* WOLFSSL_SSL_H */
